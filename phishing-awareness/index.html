@@ -154,20 +154,10 @@
 
   <section class="list" aria-label="Meddelandelista">
     <h2>Inkorg</h2>
-    <button class="mail" data-other="Anteckningar från veckomötet">
-      <div class="from"><span>Priya Nair</span><span class="time">09:12</span></div>
-      <div class="subj">Anteckningar från veckomötet</div>
-      <div class="prev">Hej alla, här är anteckningarna från dagens…</div>
-    </button>
     <button class="mail sel" id="mailPhish" aria-current="true">
       <div class="from"><span>Microsoft 365 Security</span><span class="time">08:47</span></div>
       <div class="subj">ÅTGÄRD KRÄVS: Brevlådan stängs av inom 24 tim</div>
       <div class="prev">Hej Användare, Vårt system har upptäckt ovanlig…</div>
-    </button>
-    <button class="mail" data-other="Lunch på fredag?">
-      <div class="from"><span>Marcus Webb</span><span class="time">Igår</span></div>
-      <div class="subj">Lunch på fredag?</div>
-      <div class="prev">Har du tid runt 12.30? Tänkte på…</div>
     </button>
   </section>
 
@@ -349,12 +339,7 @@
   read.addEventListener('focusin', showLink);
   read.addEventListener('mouseout', function(e){ if (!e.relatedTarget || !read.contains(e.relatedTarget)) showLink({target:document.body}); });
 
-  // Other emails and decorative toolbar
-  Array.prototype.forEach.call(document.querySelectorAll('[data-other]'), function(b){
-    b.addEventListener('click', function(){
-      toast('info','Ingen del av övningen','Gå tillbaka till det markerade meddelandet från “Microsoft 365 Security”.');
-    });
-  });
+  // Decorative toolbar
   Array.prototype.forEach.call(document.querySelectorAll('[data-decor]'), function(b){
     b.addEventListener('click', function(){
       var report = /Rapportera/.test(b.textContent);
