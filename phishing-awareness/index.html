@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="sv">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Phish Spotter – Phishing Awareness Exercise</title>
+<title>Phish Spotter – Övning i nätfiskemedvetenhet</title>
 <style>
   :root{
     --bg:#f3f2f1; --pane:#ffffff; --pane2:#faf9f8; --line:#e1dfdd; --text:#201f1e; --muted:#605e5c;
@@ -121,70 +121,70 @@
 </head>
 <body>
 
-<div class="training" role="region" aria-label="Training exercise">
-  <b>🎣 PHISHING AWARENESS EXERCISE</b>
-  <span>Nothing here is real. Click anything in the open email that looks like a red flag.</span>
+<div class="training" role="region" aria-label="Övning">
+  <b>🎣 ÖVNING I NÄTFISKEMEDVETENHET</b>
+  <span>Inget här är på riktigt. Klicka på allt i det öppna mejlet som ser ut som en varningssignal.</span>
   <span class="spacer"></span>
   <span class="score"><span id="scoreTxt">0 / 0</span><span class="bar"><i id="barFill"></i></span></span>
-  <button id="btnReveal">Show all</button>
-  <button id="btnReset">Restart</button>
+  <button id="btnReveal">Visa alla</button>
+  <button id="btnReset">Starta om</button>
 </div>
 
 <header class="topbar">
   <div class="logo" aria-hidden="true">
     <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" fill="#fff"/><path d="M3 7l9 6 9-6" stroke="#0f548c" stroke-width="2" fill="none"/></svg>
-    Mail
+    E-post
   </div>
-  <div class="search">🔍 Search</div>
-  <div class="avatar" title="You">AJ</div>
+  <div class="search">🔍 Sök</div>
+  <div class="avatar" title="Du">AJ</div>
 </header>
 
-<nav class="ribbon" aria-label="Toolbar (decorative)">
-  <button class="rb primary" data-decor>✉ New mail</button>
-  <button class="rb" data-decor>🗑 Delete</button>
-  <button class="rb" data-decor>🗄 Archive</button>
-  <button class="rb" data-decor>⚑ Report</button>
-  <button class="rb" data-decor>↩ Reply</button>
-  <button class="rb" data-decor>↪ Forward</button>
+<nav class="ribbon" aria-label="Verktygsfält (dekorativt)">
+  <button class="rb primary" data-decor>✉ Nytt mejl</button>
+  <button class="rb" data-decor>🗑 Ta bort</button>
+  <button class="rb" data-decor>🗄 Arkivera</button>
+  <button class="rb" data-decor>⚑ Rapportera</button>
+  <button class="rb" data-decor>↩ Svara</button>
+  <button class="rb" data-decor>↪ Vidarebefordra</button>
 </nav>
 
 <div class="main">
-  <aside class="folders" aria-label="Folders">
-    <div class="on"><span>Inbox</span><span class="count">3</span></div>
-    <div><span>Drafts</span></div>
-    <div><span>Sent Items</span></div>
-    <div><span>Deleted Items</span></div>
-    <div><span>Junk Email</span></div>
-    <div><span>Archive</span></div>
+  <aside class="folders" aria-label="Mappar">
+    <div class="on"><span>Inkorg</span><span class="count">3</span></div>
+    <div><span>Utkast</span></div>
+    <div><span>Skickat</span></div>
+    <div><span>Borttaget</span></div>
+    <div><span>Skräppost</span></div>
+    <div><span>Arkiv</span></div>
   </aside>
 
-  <section class="list" aria-label="Message list">
-    <h2>Inbox</h2>
-    <button class="mail" data-other="Weekly team sync notes">
+  <section class="list" aria-label="Meddelandelista">
+    <h2>Inkorg</h2>
+    <button class="mail" data-other="Anteckningar från veckomötet">
       <div class="from"><span>Priya Nair</span><span class="time">09:12</span></div>
-      <div class="subj">Weekly team sync notes</div>
-      <div class="prev">Hi all, here are the notes from today's…</div>
+      <div class="subj">Anteckningar från veckomötet</div>
+      <div class="prev">Hej alla, här är anteckningarna från dagens…</div>
     </button>
     <button class="mail sel" id="mailPhish" aria-current="true">
       <div class="from"><span>Microsoft 365 Security</span><span class="time">08:47</span></div>
-      <div class="subj">ACTION REQUIRED: Mailbox suspended in 24 hrs</div>
-      <div class="prev">Dear User, Your account have been flagged…</div>
+      <div class="subj">ÅTGÄRD KRÄVS: Brevlådan stängs av inom 24 tim</div>
+      <div class="prev">Hej Användare, Vårt system har upptäckt ovanlig…</div>
     </button>
-    <button class="mail" data-other="Lunch on Friday?">
-      <div class="from"><span>Marcus Webb</span><span class="time">Yesterday</span></div>
-      <div class="subj">Lunch on Friday?</div>
-      <div class="prev">Are you free around 12:30? Thinking about…</div>
+    <button class="mail" data-other="Lunch på fredag?">
+      <div class="from"><span>Marcus Webb</span><span class="time">Igår</span></div>
+      <div class="subj">Lunch på fredag?</div>
+      <div class="prev">Har du tid runt 12.30? Tänkte på…</div>
     </button>
   </section>
 
-  <main class="read" id="read" aria-label="Reading pane">
+  <main class="read" id="read" aria-label="Läsfönster">
     <div class="read-inner">
 
       <div class="ext-banner" data-ind="extbanner" data-ok="false" role="button" tabindex="0">
-        ⚠ <span>This message came from outside your organization. Be careful with links and attachments.</span>
+        ⚠ <span>Det här meddelandet kommer från utanför din organisation. Var försiktig med länkar och bilagor.</span>
       </div>
 
-      <h1 class="subject" data-ind="subject" data-ok="true" role="button" tabindex="0">ACTION REQUIRED: Your mailbox will be suspended in 24 hrs<span class="tick">✓</span></h1>
+      <h1 class="subject" data-ind="subject" data-ok="true" role="button" tabindex="0">ÅTGÄRD KRÄVS: Din brevlåda stängs av inom 24 timmar<span class="tick">✓</span></h1>
 
       <div class="head">
         <div class="pic" data-ind="avatar" data-ok="false" role="button" tabindex="0">M</div>
@@ -193,43 +193,43 @@
             <b data-ind="dispname" data-ok="true" role="button" tabindex="0">Microsoft 365 Security<span class="tick">✓</span></b>
             <span data-ind="sender" data-ok="true" role="button" tabindex="0">&lt;security-team@micros0ft-support.com&gt;<span class="tick">✓</span></span>
           </div>
-          <div class="line"><span class="lbl">To:</span><span data-ind="to" data-ok="false" role="button" tabindex="0">Alex Johnson &lt;alex.johnson@contoso-example.com&gt;</span></div>
-          <div class="line"><span class="lbl">Reply-To:</span><span data-ind="replyto" data-ok="true" role="button" tabindex="0">m365.recovery.desk@gmail.com<span class="tick">✓</span></span></div>
+          <div class="line"><span class="lbl">Till:</span><span data-ind="to" data-ok="false" role="button" tabindex="0">Alex Johnson &lt;alex.johnson@contoso-example.com&gt;</span></div>
+          <div class="line"><span class="lbl">Svar till:</span><span data-ind="replyto" data-ok="true" role="button" tabindex="0">m365.recovery.desk@gmail.com<span class="tick">✓</span></span></div>
         </div>
-        <div class="stamp" data-ind="date" data-ok="false" role="button" tabindex="0">Tue 14 Nov 2026, 08:47</div>
+        <div class="stamp" data-ind="date" data-ok="false" role="button" tabindex="0">tis 14 nov 2026 08:47</div>
       </div>
 
       <div class="attach" data-ind="attach" data-ok="true" role="button" tabindex="0">
-        📎 <span>Account_Verification.pdf.html</span> <span style="color:var(--muted)">(38 KB)</span><span class="tick">✓</span>
+        📎 <span>Kontoverifiering.pdf.html</span> <span style="color:var(--muted)">(38 KB)</span><span class="tick">✓</span>
       </div>
 
       <hr>
 
-      <p class="hintline">Tip: hover over a link to see where it really goes (shown at the bottom).</p>
+      <p class="hintline">Tips: håll muspekaren över en länk för att se vart den egentligen leder (visas längst ner).</p>
 
       <div class="body">
-        <p data-ind="greeting" data-ok="true" role="button" tabindex="0">Dear User,<span class="tick">✓</span></p>
+        <p data-ind="greeting" data-ok="true" role="button" tabindex="0">Hej Användare,<span class="tick">✓</span></p>
 
-        <p data-ind="grammar" data-ok="true" role="button" tabindex="0">Our system have detected unusual activitys on your Microsoft account. Your mailbox is been flagged and will be disabled.<span class="tick">✓</span></p>
+        <p data-ind="grammar" data-ok="true" role="button" tabindex="0">Vårt system har upptäckt ovanlig aktiviteter på ditt Microsoft konto. Din brevlåda är flaggat och kommer stängas av.<span class="tick">✓</span></p>
 
-        <p data-ind="urgency" data-ok="true" role="button" tabindex="0"><b>You must verify your identity within 24 hours or all your emails and files will be permanently deleted.</b> Failure to act immediately will result in loss of access.<span class="tick">✓</span></p>
+        <p data-ind="urgency" data-ok="true" role="button" tabindex="0"><b>Du måste verifiera din identitet inom 24 timmar annars kommer alla dina mejl och filer att raderas permanent.</b> Om du inte agerar omedelbart förlorar du åtkomsten.<span class="tick">✓</span></p>
 
-        <p>Sign in to confirm your account here:
+        <p>Logga in för att bekräfta ditt konto här:
           <a href="#" data-ind="link" data-ok="true" data-real="http://micros0ft-support.com.verify-login.ru/auth?id=88213" role="button" tabindex="0">https://www.office365.com/account/verify<span class="tick">✓</span></a>
         </p>
 
-        <p><a class="cta" href="#" data-ind="button" data-ok="true" data-real="http://login-secure-m365.top/session/restore" role="button" tabindex="0">Verify my account now<span class="tick">✓</span></a></p>
+        <p><a class="cta" href="#" data-ind="button" data-ok="true" data-real="http://login-secure-m365.top/session/restore" role="button" tabindex="0">Verifiera mitt konto nu<span class="tick">✓</span></a></p>
 
-        <p>Alternatively, open the attached file and enter your password to restore access.</p>
+        <p>Alternativt kan du öppna den bifogade filen och ange ditt lösenord för att återställa åtkomsten.</p>
 
-        <p>Thank you,<br>Microsoft Support Team</p>
+        <p>Tack,<br>Microsoft Supportteam</p>
 
         <div class="foot" data-ind="footer" data-ok="true" role="button" tabindex="0">
-          © 2019 Microsoft Corporation. All rights reserved. This is an automated message, do not reply. Unsubscribe from security alerts.<span class="tick">✓</span>
+          © 2019 Microsoft Corporation. Alla rättigheter förbehållna. Detta är ett automatiskt meddelande, svara inte. Avregistrera dig från säkerhetsvarningar.<span class="tick">✓</span>
         </div>
       </div>
 
-      <div class="linkbar" id="linkbar" aria-live="off">Link preview: hover over a link or button</div>
+      <div class="linkbar" id="linkbar" aria-live="off">Länkförhandsvisning: håll muspekaren över en länk eller knapp</div>
     </div>
   </main>
 </div>
@@ -238,18 +238,18 @@
 
 <dialog id="summary" aria-labelledby="sumTitle">
   <div class="dlg">
-    <h2 id="sumTitle">Exercise complete 🎉</h2>
+    <h2 id="sumTitle">Övningen klar 🎉</h2>
     <p id="sumLead"></p>
-    <p><b>What to do with a message like this:</b></p>
+    <p><b>Så hanterar du ett sådant här meddelande:</b></p>
     <ul>
-      <li>Don't click links or open attachments.</li>
-      <li>Don't reply or enter credentials anywhere.</li>
-      <li>Report it with your organization's phishing-report button, then delete it.</li>
-      <li>If unsure, contact the sender through a channel you already trust.</li>
+      <li>Klicka inte på länkar och öppna inga bilagor.</li>
+      <li>Svara inte och ange inte inloggningsuppgifter någonstans.</li>
+      <li>Rapportera det med din organisations knapp för nätfiske och radera det sedan.</li>
+      <li>Är du osäker, kontakta avsändaren via en kanal du redan litar på.</li>
     </ul>
     <div class="row">
-      <button class="btn sec" id="sumClose">Keep looking</button>
-      <button class="btn" id="sumRestart">Restart</button>
+      <button class="btn sec" id="sumClose">Fortsätt leta</button>
+      <button class="btn" id="sumRestart">Starta om</button>
     </div>
   </div>
 </dialog>
@@ -258,21 +258,21 @@
 (function(){
   // What each clickable element teaches. ok=true means it IS a red flag.
   var INFO = {
-    sender:{ok:true, title:"Lookalike domain", msg:"“micros0ft-support.com” uses a zero instead of the letter o, and Microsoft doesn't send security notices from a “-support” domain."},
-    dispname:{ok:true, title:"Display name can be faked", msg:"Anyone can set the display name to “Microsoft 365 Security”. Always check the actual address next to it."},
-    replyto:{ok:true, title:"Mismatched Reply-To", msg:"Replies would go to a free Gmail address, not to Microsoft. Attackers do this to collect your responses."},
-    subject:{ok:true, title:"Urgency in the subject", msg:"Threats like “suspended in 24 hrs” are designed to make you act before you think."},
-    greeting:{ok:true, title:"Generic greeting", msg:"“Dear User” suggests a mass mailing. Real providers usually address you by name."},
-    grammar:{ok:true, title:"Spelling and grammar errors", msg:"“system have”, “activitys”, “is been flagged”. Errors like these are common in phishing emails."},
-    urgency:{ok:true, title:"Threat and pressure", msg:"Deadlines and threats of permanent data loss are a classic pressure tactic."},
-    link:{ok:true, title:"Link text doesn't match destination", msg:"It shows office365.com, but the real target (see the preview bar) is a .ru domain with a long lookalike prefix."},
-    button:{ok:true, title:"Button leads to an unrelated site", msg:"The button goes to “login-secure-m365.top”, which has nothing to do with Microsoft."},
-    attach:{ok:true, title:"Dangerous attachment", msg:"“.pdf.html” is a double extension. It's an HTML page that can imitate a login form and capture your password."},
-    footer:{ok:true, title:"Outdated and generic footer", msg:"A 2019 copyright in a 2026 email, plus “do not reply” and a vague unsubscribe link, point to a copied template."},
-    extbanner:{ok:false, title:"Not a red flag in the email itself", msg:"This banner is added by your mail system. It's a useful prompt to be careful, but it doesn't prove the message is phishing."},
-    to:{ok:false, title:"Not suspicious here", msg:"The message is addressed to your real address. Attackers can do this too, so it doesn't tell you much either way."},
-    date:{ok:false, title:"Normal timestamp", msg:"The time and date look ordinary. Timestamps are easy to fake, so don't rely on them."},
-    avatar:{ok:false, title:"Not a reliable signal", msg:"The avatar is just a letter badge. Profile pictures can be copied, so they don't prove who sent it."}
+    sender:{ok:true, title:"Förväxlingsbar domän", msg:"“micros0ft-support.com” har en nolla i stället för bokstaven o, och Microsoft skickar inte säkerhetsmeddelanden från en “-support”-domän."},
+    dispname:{ok:true, title:"Visningsnamnet kan förfalskas", msg:"Vem som helst kan sätta visningsnamnet till “Microsoft 365 Security”. Kontrollera alltid den faktiska adressen bredvid."},
+    replyto:{ok:true, title:"Avvikande svarsadress", msg:"Svar skulle gå till en gratis Gmail-adress, inte till Microsoft. Angripare gör så här för att samla in dina svar."},
+    subject:{ok:true, title:"Brådska i ämnesraden", msg:"Hot som “stängs av inom 24 timmar” är till för att få dig att agera innan du tänker."},
+    greeting:{ok:true, title:"Generisk hälsning", msg:"“Hej Användare” tyder på ett massutskick. Riktiga leverantörer tilltalar dig oftast med namn."},
+    grammar:{ok:true, title:"Stavnings- och grammatikfel", msg:"“ovanlig aktiviteter”, “Microsoft konto” (isärskrivet), “är flaggat” och “kommer stängas”. Sådana fel är vanliga i nätfiskemejl."},
+    urgency:{ok:true, title:"Hot och press", msg:"Tidsfrister och hot om permanent dataförlust är ett klassiskt sätt att sätta press på dig."},
+    link:{ok:true, title:"Länktexten stämmer inte med målet", msg:"Den visar office365.com, men det verkliga målet (se förhandsvisningen) är en .ru-domän med ett långt förväxlingsbart prefix."},
+    button:{ok:true, title:"Knappen leder till en orelaterad webbplats", msg:"Knappen går till “login-secure-m365.top”, som inte har något med Microsoft att göra."},
+    attach:{ok:true, title:"Farlig bilaga", msg:"“.pdf.html” är en dubbel filändelse. Det är en HTML-sida som kan efterlikna ett inloggningsformulär och fånga ditt lösenord."},
+    footer:{ok:true, title:"Föråldrad och generisk sidfot", msg:"Ett upphovsrättsår 2019 i ett mejl från 2026, plus “svara inte” och en vag avregistreringslänk, tyder på en kopierad mall."},
+    extbanner:{ok:false, title:"Ingen varningssignal i själva mejlet", msg:"Banderollen läggs till av ditt e-postsystem. Den är en bra påminnelse om att vara försiktig, men bevisar inte att meddelandet är nätfiske."},
+    to:{ok:false, title:"Inte misstänkt här", msg:"Meddelandet är adresserat till din riktiga adress. Angripare kan göra likadant, så det säger inte mycket åt något håll."},
+    date:{ok:false, title:"Normal tidsstämpel", msg:"Tid och datum ser vanliga ut. Tidsstämplar är lätta att förfalska, så lita inte på dem."},
+    avatar:{ok:false, title:"Ingen tillförlitlig signal", msg:"Avataren är bara en bokstavsbricka. Profilbilder kan kopieras och bevisar inte vem som skickat mejlet."}
   };
 
   var read = document.getElementById('read');
@@ -289,7 +289,7 @@
 
   function updateScore(){
     var n = Object.keys(found).length;
-    scoreTxt.textContent = n + ' / ' + total + ' found' + (wrong ? ' · ' + wrong + ' miss' + (wrong>1?'es':'') : '');
+    scoreTxt.textContent = n + ' / ' + total + ' hittade' + (wrong ? ' · ' + wrong + (wrong>1?' missar':' miss') : '');
     barFill.style.width = (n/total*100) + '%';
   }
 
@@ -308,10 +308,10 @@
     var id = el.dataset.ind, info = INFO[id];
     if (!info) return;
     if (info.ok){
-      if (found[id]){ toast('info','Already found', 'You have already spotted this one.'); return; }
+      if (found[id]){ toast('info','Redan hittad', 'Du har redan hittat den här.'); return; }
       found[id] = true;
       el.classList.add('found');
-      toast('ok','✔ Correct: ' + info.title, info.msg);
+      toast('ok','✔ Rätt: ' + info.title, info.msg);
       updateScore();
       if (Object.keys(found).length === total && !shownSummary){
         shownSummary = true;
@@ -321,14 +321,14 @@
       wrong++;
       el.classList.add('decoyed','shake');
       setTimeout(function(){ el.classList.remove('shake'); }, 400);
-      toast('bad','✘ Not quite: ' + info.title, info.msg);
+      toast('bad','✘ Inte riktigt: ' + info.title, info.msg);
       updateScore();
     }
   }
 
   function openSummary(){
     document.getElementById('sumLead').textContent =
-      'You found all ' + total + ' red flags' + (wrong ? ' with ' + wrong + ' miss' + (wrong>1?'es':'') : ' with no misses') + '.';
+      'Du hittade alla ' + total + ' varningssignaler' + (wrong ? ' med ' + wrong + (wrong>1?' missar':' miss') : ' utan en enda miss') + '.';
     if (summary.showModal) summary.showModal(); else summary.setAttribute('open','');
   }
 
@@ -349,7 +349,7 @@
   // Link preview, like a browser status bar
   function showLink(e){
     var a = e.target.closest('[data-real]');
-    linkbar.textContent = a ? 'Link preview: ' + a.dataset.real : 'Link preview: hover over a link or button';
+    linkbar.textContent = a ? 'Länkförhandsvisning: ' + a.dataset.real : 'Länkförhandsvisning: håll muspekaren över en länk eller knapp';
   }
   read.addEventListener('mouseover', showLink);
   read.addEventListener('focusin', showLink);
@@ -358,14 +358,14 @@
   // Other emails and decorative toolbar
   Array.prototype.forEach.call(document.querySelectorAll('[data-other]'), function(b){
     b.addEventListener('click', function(){
-      toast('info','Not part of this exercise','Go back to the highlighted “Microsoft 365 Security” message.');
+      toast('info','Ingen del av övningen','Gå tillbaka till det markerade meddelandet från “Microsoft 365 Security”.');
     });
   });
   Array.prototype.forEach.call(document.querySelectorAll('[data-decor]'), function(b){
     b.addEventListener('click', function(){
-      var report = /Report/.test(b.textContent);
-      toast('info', report ? 'Good instinct' : 'Toolbar is decorative',
-        report ? 'In real life, reporting is the right move. Here, first find the red flags in the email itself.' : 'This is only an exercise. Click the suspicious parts of the email.');
+      var report = /Rapportera/.test(b.textContent);
+      toast('info', report ? 'Bra instinkt' : 'Verktygsfältet är dekorativt',
+        report ? 'I verkligheten är det rätt att rapportera. Här ska du först hitta varningssignalerna i själva mejlet.' : 'Det här är bara en övning. Klicka på de misstänkta delarna av mejlet.');
     });
   });
 
@@ -374,7 +374,7 @@
       if (el.dataset.ok==='true' && !found[el.dataset.ind]){ found[el.dataset.ind]=true; el.classList.add('found'); }
     });
     updateScore();
-    toast('info','All red flags revealed','Green outlines mark every real warning sign. Click “Restart” to try again.');
+    toast('info','Alla varningssignaler visade','Gröna ramar markerar varje verklig varningssignal. Klicka på “Starta om” för att försöka igen.');
   });
   function reset(){
     found = {}; wrong = 0; shownSummary = false;

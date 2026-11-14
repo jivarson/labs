@@ -2,10 +2,10 @@
 
 Small hands-on exercises and experiments.
 
-## Phish Spotter (phishing awareness)
+## Phish Spotter (nätfiskemedvetenhet)
 
-An Outlook-style inbox with a fake phishing email. Click anything that looks like a red flag and a toast tells you whether you are right.
+En inkorg i Outlook-stil med ett falskt nätfiskemejl på svenska. Klicka på allt som ser ut som en varningssignal så får du veta direkt om du har rätt.
 
-Run it: https://jivarson.github.io/labs/phishing-awareness/
+Kör den: https://jivarson.github.io/labs/phishing-awareness/
 
-Everything in it is fictional and inert: no links go anywhere and nothing is collected.
+Allt i den är fiktivt och overksamt: inga länkar leder någonstans och ingenting samlas in.
