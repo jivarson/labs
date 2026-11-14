@@ -6,17 +6,11 @@
 <title>Phish Spotter – Övning i nätfiskemedvetenhet</title>
 <style>
   :root{
-    --bg:#f3f2f1; --pane:#ffffff; --pane2:#faf9f8; --line:#e1dfdd; --text:#201f1e; --muted:#605e5c;
-    --brand:#0f6cbd; --brand-d:#0b5a9e; --brandbar:#0f548c; --sel:#cfe4fa; --hover:#f3f2f1;
+    color-scheme:light;
+    --bg:#ffffff; --pane:#ffffff; --pane2:#f5f9fe; --line:#dbe6f3; --text:#1b3a5c; --muted:#5b7a9a;
+    --brand:#0f6cbd; --brand-d:#0a58a0; --brandbar:#0f6cbd; --sel:#dcebfa; --hover:#eef5fc;
     --ok:#107c10; --okbg:#dff6dd; --bad:#c50f1f; --badbg:#fde7e9; --info:#605e5c; --warn:#fff4ce; --warnline:#e0b800;
     --shadow:0 6px 24px rgba(0,0,0,.25);
-  }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --bg:#1b1a19; --pane:#292827; --pane2:#201f1e; --line:#3b3a39; --text:#f3f2f1; --muted:#b3b0ad;
-      --brand:#4f9ee8; --brand-d:#2f86d6; --brandbar:#0b3a63; --sel:#1f3b57; --hover:#323130;
-      --ok:#6bd16b; --okbg:#173a17; --bad:#ff7b86; --badbg:#4a1a1f; --warn:#3d3410; --warnline:#b39700;
-    }
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -24,7 +18,7 @@
   button{font:inherit;color:inherit}
 
   /* training banner */
-  .training{background:#5c2d91;color:#fff;padding:6px 16px;font-size:13px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .training{background:#0a3d6b;color:#fff;padding:6px 16px;font-size:13px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
   .training b{letter-spacing:.3px}
   .training .spacer{flex:1}
   .training button{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:4px;padding:3px 10px;cursor:pointer}
@@ -34,39 +28,39 @@
   .bar i{display:block;height:100%;width:0;background:#7fe27f;transition:width .3s}
 
   /* app chrome */
-  .topbar{background:var(--brandbar);color:#fff;display:flex;align-items:center;gap:14px;padding:0 14px;height:44px}
+  .topbar{background:var(--brandbar);box-shadow:0 1px 2px rgba(0,0,0,.15);color:#fff;display:flex;align-items:center;gap:14px;padding:0 14px;height:44px}
   .logo{display:flex;align-items:center;gap:8px;font-weight:600}
   .logo svg{width:22px;height:22px}
   .search{flex:1;max-width:520px;margin:0 auto;background:rgba(255,255,255,.18);border-radius:4px;padding:6px 12px;color:rgba(255,255,255,.85)}
-  .avatar{width:28px;height:28px;border-radius:50%;background:#c239b3;display:grid;place-items:center;font-size:12px;font-weight:600}
+  .avatar{width:28px;height:28px;border-radius:50%;background:#fff;color:#0f6cbd;display:grid;place-items:center;font-size:12px;font-weight:600}
   .ribbon{background:var(--pane);border-bottom:1px solid var(--line);display:flex;gap:4px;padding:6px 12px;overflow-x:auto}
-  .ribbon .rb{background:none;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;white-space:nowrap;color:var(--text)}
+  .ribbon .rb{background:none;border:0;padding:5px 10px;border-radius:4px;cursor:pointer;white-space:nowrap;color:var(--brand);font-weight:500}
   .ribbon .rb:hover{background:var(--hover)}
   .ribbon .primary{background:var(--brand);color:#fff}
   .ribbon .primary:hover{background:var(--brand-d)}
 
   .main{flex:1;display:grid;grid-template-columns:200px 340px 1fr;min-height:0}
   .folders{background:var(--pane2);border-right:1px solid var(--line);padding:8px 0;overflow:auto}
-  .folders div{padding:7px 16px;cursor:default;display:flex;justify-content:space-between}
-  .folders div.on{background:var(--sel);font-weight:600;border-left:3px solid var(--brand);padding-left:13px}
+  .folders div{padding:7px 16px;cursor:default;color:var(--text);display:flex;justify-content:space-between}
+  .folders div.on{background:var(--sel);color:var(--brand);font-weight:600;border-left:3px solid var(--brand);padding-left:13px}
   .folders .count{color:var(--brand);font-weight:600}
   .list{background:var(--pane);border-right:1px solid var(--line);overflow:auto}
   .list h2{margin:0;padding:12px 16px 6px;font-size:15px}
   .mail{padding:10px 16px;border-bottom:1px solid var(--line);cursor:pointer;border-left:3px solid transparent;width:100%;text-align:left;background:none;border-top:0;border-right:0;display:block}
   .mail:hover{background:var(--hover)}
   .mail.sel{background:var(--sel);border-left-color:var(--brand)}
-  .mail .from{font-weight:600;display:flex;justify-content:space-between;gap:8px}
+  .mail .from{font-weight:600;color:var(--brand);display:flex;justify-content:space-between;gap:8px}
   .mail .time{color:var(--muted);font-weight:400;font-size:12px}
   .mail .subj{color:var(--brand);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .mail .prev{color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* reading pane */
-  .read{background:var(--pane);overflow:auto;position:relative;padding:0 0 40px}
-  .read-inner{max-width:820px;padding:20px 28px}
+  .read{background:var(--pane);overflow:auto;position:relative;padding:0}
+  .read-inner{max-width:820px;padding:20px 28px 0}
   .ext-banner{background:var(--warn);border:1px solid var(--warnline);border-radius:4px;padding:8px 12px;margin-bottom:14px;display:flex;gap:8px;align-items:center}
-  .subject{font-size:20px;font-weight:600;margin:0 0 14px}
+  .subject{color:var(--brand);font-size:20px;font-weight:600;margin:0 0 14px}
   .head{display:flex;gap:12px;align-items:flex-start;margin-bottom:6px}
-  .pic{width:42px;height:42px;border-radius:50%;background:#7a7574;color:#fff;display:grid;place-items:center;font-weight:600;flex:none}
+  .pic{width:42px;height:42px;border-radius:50%;background:#0f6cbd;color:#fff;display:grid;place-items:center;font-weight:600;flex:none}
   .meta{flex:1;min-width:0}
   .meta .line{margin:1px 0}
   .meta .lbl{color:var(--muted);display:inline-block;min-width:68px}
@@ -77,7 +71,7 @@
   .body a{color:var(--brand)}
   .cta{display:inline-block;background:#0078d4;color:#fff!important;text-decoration:none;padding:10px 22px;border-radius:2px;font-weight:600;margin:6px 0 14px}
   .foot{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:10px;margin-top:18px}
-  .linkbar{position:sticky;bottom:0;margin-top:20px;background:var(--pane2);border:1px solid var(--line);border-radius:4px;padding:5px 10px;font:12px ui-monospace,Consolas,monospace;color:var(--muted);min-height:28px;word-break:break-all}
+  .linkbar{position:sticky;bottom:0;margin-top:20px;z-index:2;background:var(--pane2);border:1px solid var(--line);border-radius:4px;padding:5px 10px;font:12px ui-monospace,Consolas,monospace;color:var(--muted);min-height:28px;word-break:break-all}
   .hintline{color:var(--muted);font-size:12.5px;margin:0 0 10px}
 
   /* clickable indicators */
