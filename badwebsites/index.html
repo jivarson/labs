@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bad Websites – Övning i att känna igen falska webbplatser</title>
+<style>
+  :root{
+    color-scheme:light;
+    --bg:#e9eef4; --pane:#ffffff; --line:#dbe6f3; --text:#1b3a5c; --muted:#5b7a9a;
+    --brand:#0f6cbd; --chrome:#dee3ea; --chrome2:#f1f4f8;
+    --ok:#107c10; --okbg:#dff6dd; --bad:#c50f1f; --badbg:#fde7e9; --info:#605e5c;
+    --shadow:0 6px 24px rgba(0,0,0,.25);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif;display:flex;flex-direction:column}
+  button{font:inherit;color:inherit}
+
+  /* training banner (same as phishing-awareness) */
+  .training{background:#0a3d6b;color:#fff;padding:6px 16px;font-size:13px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .training b{letter-spacing:.3px}
+  .training .spacer{flex:1}
+  .training button{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:4px;padding:3px 10px;cursor:pointer}
+  .training button:hover{background:rgba(255,255,255,.3)}
+  .score{display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+  .bar{width:120px;height:8px;background:rgba(255,255,255,.25);border-radius:4px;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:#7fe27f;transition:width .3s}
+
+  /* browser window */
+  .stage{flex:1;min-height:0;padding:18px;display:flex}
+  .window{flex:1;min-height:0;max-width:1180px;margin:0 auto;background:var(--pane);border-radius:10px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;border:1px solid #c5ced9}
+  .tabs{background:var(--chrome);display:flex;align-items:flex-end;gap:6px;padding:8px 10px 0;min-width:0}
+  .dots{display:flex;gap:7px;padding:0 8px 10px 2px;flex:none}
+  .dots i{width:12px;height:12px;border-radius:50%;background:#ff5f57}
+  .dots i:nth-child(2){background:#febc2e} .dots i:nth-child(3){background:#28c840}
+  .tab{background:var(--chrome2);border-radius:8px 8px 0 0;padding:7px 12px;display:flex;gap:8px;align-items:center;max-width:300px;min-width:0;font-size:13px}
+  .tab .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tab .x{color:var(--muted)}
+  .tab.bg{background:transparent;color:var(--muted)}
+  .newtab{padding:0 8px 8px;color:var(--muted)}
+  .toolbar{background:var(--chrome2);display:flex;align-items:center;gap:6px;padding:6px 10px;border-bottom:1px solid #cfd7e1}
+  .navbtn{background:none;border:0;width:30px;height:30px;border-radius:50%;cursor:pointer;color:#45576b;font-size:16px;flex:none}
+  .navbtn:hover{background:#e2e8ef}
+  .omnibox{flex:1;min-width:0;background:#fff;border:1px solid #cfd7e1;border-radius:18px;padding:4px 6px 4px 6px;display:flex;align-items:center;gap:6px;font-size:13.5px}
+  .secchip{display:inline-flex;align-items:center;gap:5px;color:var(--bad);font-weight:600;padding:3px 9px;border-radius:14px;background:#fdecee;white-space:nowrap;flex:none}
+  .url{min-width:0;overflow-x:auto;white-space:nowrap;scrollbar-width:none;font-family:ui-monospace,Consolas,monospace;font-size:13px;padding:3px 2px}
+  .url::-webkit-scrollbar{display:none}
+  .url .scheme{color:var(--bad);text-decoration:line-through}
+  .url .host{color:#111}
+  .url .rest{color:#7a8794}
+  .bookmarks{background:var(--chrome2);border-bottom:1px solid #cfd7e1;padding:3px 12px;font-size:12.5px;color:#45576b;display:flex;gap:16px;overflow:hidden;white-space:nowrap}
+
+  /* the dodgy site */
+  .viewport{flex:1;min-height:0;overflow:auto;position:relative;background:#fff;font-family:Arial,Helvetica,sans-serif;color:#222}
+  .promo{background:repeating-linear-gradient(45deg,#e00000,#e00000 14px,#c00000 14px,#c00000 28px);color:#fff700;text-align:center;font-weight:900;padding:8px 10px;font-size:15px;letter-spacing:.5px}
+  .shophead{display:flex;align-items:center;gap:18px;padding:12px 20px;border-bottom:3px solid #ff8800;flex-wrap:wrap}
+  .shoplogo{font:900 24px/1 "Trebuchet MS",Arial,sans-serif;color:#ff6a00}
+  .shoplogo small{display:block;font:600 11px Arial;color:#888;letter-spacing:.3px}
+  .shopsearch{flex:1;min-width:160px;border:2px solid #ff8800;border-radius:3px;padding:7px 10px;color:#999}
+  .cart{font-size:15px;white-space:nowrap}
+  .shopnav{display:flex;gap:18px;padding:8px 20px;background:#222;color:#fff;font-size:13px;flex-wrap:wrap}
+  .shopnav a{color:#fff;text-decoration:none}
+  .page{max-width:980px;margin:0 auto;padding:20px}
+  .product{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px}
+  .pimg{aspect-ratio:1;background:linear-gradient(160deg,#20242c,#4a5262);border-radius:10px;display:grid;place-items:center;position:relative}
+  .pimg svg{width:44%;height:auto}
+  .pimg .sticker{position:absolute;top:12px;left:12px;background:#e00000;color:#fff;font-weight:900;font-size:22px;padding:8px 12px;border-radius:50%;transform:rotate(-12deg)}
+  h1.pname{font-size:24px;margin:0 0 6px;color:#111}
+  .stars{color:#f5a400;font-size:14px}
+  .pricebox{margin:12px 0;padding:10px 0}
+  .old{color:#888;text-decoration:line-through;font-size:16px}
+  .new{color:#e00000;font-size:38px;font-weight:900;display:block;line-height:1.1}
+  .timer{background:#fff3cd;border:2px dashed #e00000;color:#a00000;font-weight:700;padding:8px 12px;margin:10px 0;display:inline-block}
+  .timer b{font-variant-numeric:tabular-nums;font-size:18px}
+  .desc p{margin:0 0 10px}
+  .buy{display:block;width:100%;background:#28a745;color:#fff;border:0;font-weight:900;font-size:18px;padding:14px;border-radius:4px;margin:12px 0 6px;cursor:pointer;text-align:center;text-decoration:none}
+  .paybox{border:1px solid #ddd;border-radius:6px;padding:10px 12px;margin-top:10px;font-size:13px;background:#fafafa}
+  .badge{display:inline-flex;align-items:center;gap:8px;border:2px solid #2e7d32;color:#2e7d32;border-radius:6px;padding:6px 10px;font-weight:700;margin-top:12px;font-size:13px}
+  .badge .shield{font-size:20px}
+  .checkout{margin-top:16px;border:1px solid #ddd;border-radius:6px;padding:12px}
+  .checkout h3{margin:0 0 8px;font-size:15px}
+  .checkout label{display:block;font-size:12.5px;color:#555;margin:6px 0 2px}
+  .checkout input{width:100%;padding:7px 8px;border:1px solid #ccc;border-radius:3px;background:#f3f3f3;font:inherit}
+  .shipping{font-size:13px;color:#2e7d32;margin:6px 0}
+  section.reviews{margin-top:28px}
+  section.reviews h2{font-size:18px;margin:0 0 8px}
+  .rev{border-top:1px solid #eee;padding:8px 0;font-size:13.5px}
+  .rev .who{font-weight:700}
+  .rev .when{color:#888;font-size:12px}
+  .cookie{margin-top:24px;background:#f2f2f2;border-radius:6px;padding:10px 12px;font-size:12.5px;color:#555}
+  footer.shopfoot{background:#222;color:#bbb;margin-top:28px;padding:18px 20px;font-size:12.5px}
+  .footcols{max-width:980px;margin:0 auto;display:flex;gap:30px;flex-wrap:wrap}
+  .footcols a{color:#ddd;display:block;margin:3px 0}
+  .footcols h4{color:#fff;margin:0 0 6px;font-size:13px}
+
+  /* browser status bar (link preview) */
+  .status{position:sticky;bottom:0;left:0;display:inline-block;max-width:100%;background:#f1f4f8;border:1px solid #cfd7e1;border-left:0;border-bottom:0;border-radius:0 6px 0 0;padding:3px 10px;font:12px ui-monospace,Consolas,monospace;color:#45576b;z-index:3;word-break:break-all;opacity:0;transition:opacity .12s;pointer-events:none}
+  .status.on{opacity:1}
+
+  /* clickable indicators */
+  [data-ind]{cursor:pointer;border-radius:3px;outline:2px dashed transparent;outline-offset:2px;transition:outline-color .15s, background .15s}
+  [data-ind]:hover,[data-ind]:focus-visible{outline-color:var(--brand);background-color:rgba(15,108,189,.08)}
+  [data-ind].found{outline:2px solid var(--ok);background-color:var(--okbg)}
+  [data-ind].decoyed{outline:2px dotted var(--muted)}
+  [data-ind].shake{animation:shake .35s;outline:2px solid var(--bad);background-color:var(--badbg)}
+  @keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .tick{display:none;color:var(--ok);font-weight:700;margin-left:4px}
+  .found .tick{display:inline}
+  .buy[data-ind].found,.pimg[data-ind].found{background-color:inherit}
+
+  /* toast */
+  #toasts{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:10px;z-index:50;max-width:min(420px,calc(100vw - 36px))}
+  .toast{background:var(--pane);border-left:6px solid var(--info);box-shadow:var(--shadow);border-radius:6px;padding:12px 14px;animation:in .2s ease-out}
+  .toast.ok{border-left-color:var(--ok)} .toast.bad{border-left-color:var(--bad)}
+  .toast b{display:block;margin-bottom:2px}
+  .toast.ok b{color:var(--ok)} .toast.bad b{color:var(--bad)}
+  @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* summary dialog */
+  dialog{border:0;border-radius:10px;padding:0;max-width:560px;width:calc(100vw - 32px);box-shadow:var(--shadow);background:var(--pane);color:var(--text)}
+  dialog::backdrop{background:rgba(0,0,0,.5)}
+  .dlg{padding:22px 24px}
+  .dlg h2{margin:0 0 6px}
+  .dlg ul{padding-left:20px;margin:10px 0}
+  .dlg li{margin:5px 0}
+  .dlg .row{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+  .btn{background:var(--brand);color:#fff;border:0;border-radius:4px;padding:8px 16px;cursor:pointer}
+  .btn.sec{background:none;border:1px solid var(--line);color:var(--text)}
+
+  @media (max-width:760px){
+    .stage{padding:0}
+    .window{border-radius:0}
+    .product{grid-template-columns:1fr}
+    .tab.bg,.newtab,.bookmarks,.dots{display:none}
+    .navbtn.fwd{display:none}
+    .page{padding:14px}
+    .shophead{padding:10px 14px}
+  }
+</style>
+</head>
+<body>
+
+<div class="training" role="region" aria-label="Övning">
+  <b>🕵 ÖVNING: FALSKA WEBBPLATSER</b>
+  <span>Inget här är på riktigt. Klicka på allt i webbläsaren som avslöjar att sidan är ett bedrägeri.</span>
+  <span class="spacer"></span>
+  <span class="score"><span id="scoreTxt">0 / 0</span><span class="bar"><i id="barFill"></i></span></span>
+  <button id="btnReveal">Visa alla</button>
+  <button id="btnReset">Starta om</button>
+</div>
+
+<div class="stage">
+<div class="window" id="win">
+
+  <div class="tabs">
+    <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="tab"><span>🟧</span><span class="t">Teknikbutiken | BLACK FRIDAY -91% !!!</span><span class="x">✕</span></div>
+    <div class="tab bg"><span>📰</span><span class="t">Nyheter</span></div>
+    <div class="newtab" aria-hidden="true">＋</div>
+  </div>
+
+  <div class="toolbar">
+    <button class="navbtn" data-decor title="Bakåt">←</button>
+    <button class="navbtn fwd" data-decor title="Framåt">→</button>
+    <button class="navbtn" data-ind="reload" data-ok="false" title="Ladda om">⟳</button>
+    <div class="omnibox">
+      <span class="secchip" data-ind="tls" data-ok="true" role="button" tabindex="0">⚠ Inte säker<span class="tick">✓</span></span>
+      <span class="url" title="Dra eller scrolla i adressfältet för att se hela adressen"><span class="scheme">https</span><span class="rest">://</span><span class="host" data-ind="domain" data-ok="true" role="button" tabindex="0">teknlkbutiken.se.kampanj-erbjudande.xyz<span class="tick">✓</span></span><span class="rest" data-ind="longurl" data-ok="true" role="button" tabindex="0">/sv-se/rea/bf2026/produkt.php?id=88213&amp;ref=sms_vinnare&amp;sid=7f3a9c0e1b2d44aa9e&amp;redir=aHR0cDovL3BheS1zZWN1cmUudG9w&amp;utm=FREE_PHONE<span class="tick">✓</span></span></span>
+    </div>
+    <button class="navbtn" data-decor title="Meny">⋮</button>
+  </div>
+
+  <div class="bookmarks" aria-hidden="true"><span>⭐ Bokmärken</span><span>📁 Skola</span><span>📁 Recept</span><span>🎵 Musik</span></div>
+
+  <div class="viewport" id="site">
+    <div class="promo" data-ind="tabtitle" data-ok="true" role="button" tabindex="0">🔥🔥 BLACK FRIDAY MEGA REA – ALLT MÅSTE BORT – UPP TILL -91% – ENDAST IDAG!!! 🔥🔥<span class="tick">✓</span></div>
+
+    <header class="shophead">
+      <div class="shoplogo">TEKNIKBUTIKEN<small>Sveriges största tekniksbutik</small></div>
+      <div class="shopsearch" data-ind="search" data-ok="false" role="button" tabindex="0">🔍 Sök bland 10 000 produkter…</div>
+      <div class="cart" data-ind="cart" data-ok="false" role="button" tabindex="0">🛒 Varukorg (0)</div>
+    </header>
+
+    <nav class="shopnav">
+      <a href="#" data-real="#">Mobiler</a><a href="#" data-real="#">Datorer</a><a href="#" data-real="#">TV &amp; Ljud</a><a href="#" data-real="#">Gaming</a><a href="#" data-real="#">Rea</a>
+    </nav>
+
+    <div class="page">
+      <div class="product">
+        <div class="pimg" data-ind="image" data-ok="false" role="button" tabindex="0" aria-label="Produktbild">
+          <span class="sticker">-91%</span>
+          <svg viewBox="0 0 60 110" aria-hidden="true"><rect x="2" y="2" width="56" height="106" rx="9" fill="#111" stroke="#9aa3b2" stroke-width="2"/><rect x="6" y="10" width="48" height="88" rx="3" fill="#3b6fd8"/><circle cx="30" cy="104" r="2" fill="#555"/></svg>
+        </div>
+
+        <div>
+          <h1 class="pname">Smartphone Nova 15 Pro 256 GB – Titan Svart</h1>
+          <div class="stars">★★★★★ <span style="color:#555">(4 812 omdömen)</span></div>
+
+          <div class="pricebox" data-ind="price" data-ok="true" role="button" tabindex="0">
+            <span class="old">Ord. pris 14 999 kr</span>
+            <span class="new">1 299 kr</span>
+            <span style="color:#e00000;font-weight:700">Du sparar 13 700 kr!!</span><span class="tick">✓</span>
+          </div>
+
+          <div class="timer" data-ind="timer" data-ok="true" role="button" tabindex="0">⏰ Erbjudandet går ut om <b id="countdown">09:59</b> – endast <b>3 st</b> kvar i lager!<span class="tick">✓</span></div>
+
+          <div class="desc" data-ind="spelling" data-ok="true" role="button" tabindex="0">
+            <p>Världens bäst pris, garanterad! Bestäl idag och få din nya telefon levererat direkt till dörren i hela sverige. Original produkt med full garanti, 100% äkta och helt ny i förpackningen.<span class="tick">✓</span></p>
+          </div>
+
+          <p class="shipping" data-ind="shipping" data-ok="false" role="button" tabindex="0">🚚 Fri frakt vid köp över 499 kr. Leverans 2–4 arbetsdagar.</p>
+
+          <a href="#" class="buy" data-ind="buy" data-ok="true" data-real="http://pay-secure.top/checkout/?m=teknikbutiken&amp;amt=1299" role="button" tabindex="0">KÖP NU – INNAN DET ÄR SLUT!<span class="tick">✓</span></a>
+
+          <div class="paybox" data-ind="payment" data-ok="true" role="button" tabindex="0">
+            <b>Betalningsalternativ:</b> Swish till privatnummer, presentkort (Google Play / Apple) eller Bitcoin. <i>Kortbetalning är tillfälligt ur funktion.</i><span class="tick">✓</span>
+          </div>
+
+          <div class="badge" data-ind="badge" data-ok="true" role="button" tabindex="0"><span class="shield">🛡</span> 100% SÄKER HANDEL<br>Certifierad &amp; Verifierad 2026<span class="tick">✓</span></div>
+
+          <div class="checkout" data-ind="checkout" data-ok="true" role="button" tabindex="0">
+            <h3>Snabbkassa – reservera din telefon<span class="tick">✓</span></h3>
+            <label>Personnummer</label><input disabled placeholder="ÅÅÅÅMMDD-XXXX">
+            <label>Kortnummer</label><input disabled placeholder="XXXX XXXX XXXX XXXX">
+            <label>Säkerhetskod (CVC) och BankID-kod</label><input disabled placeholder="Krävs för verifiering">
+          </div>
+        </div>
+      </div>
+
+      <section class="reviews" data-ind="reviews" data-ok="true" role="button" tabindex="0">
+        <h2>Kundomdömen<span class="tick">✓</span></h2>
+        <div class="rev"><span class="who">Anna K.</span> <span class="stars">★★★★★</span> <span class="when">18 nov 2026</span><br>Fantastisk produkt!! Snabb leverans, rekommenderar starkt till alla!!</div>
+        <div class="rev"><span class="who">Erik S.</span> <span class="stars">★★★★★</span> <span class="when">18 nov 2026</span><br>Fantastisk produkt!! Snabb leverans, rekommenderar starkt till alla!</div>
+        <div class="rev"><span class="who">Maria L.</span> <span class="stars">★★★★★</span> <span class="when">18 nov 2026</span><br>Bästa köpet nånsin. Fantastisk produkt, snabb leverans!!</div>
+        <div class="rev"><span class="who">Johan P.</span> <span class="stars">★★★★★</span> <span class="when">18 nov 2026</span><br>Very good product, fast delivery. I recommend!!</div>
+      </section>
+
+      <div class="cookie" data-ind="cookie" data-ok="false" role="button" tabindex="0">🍪 Vi använder cookies för att förbättra din upplevelse. Läs mer i vår cookiepolicy.</div>
+    </div>
+
+    <footer class="shopfoot">
+      <div class="footcols">
+        <div data-ind="deadlinks" data-ok="true" role="button" tabindex="0">
+          <h4>Kundservice<span class="tick">✓</span></h4>
+          <a href="#" data-real="#">Om oss</a>
+          <a href="#" data-real="#">Köpvillkor</a>
+          <a href="#" data-real="javascript:void(0)">Returer &amp; ångerrätt</a>
+          <a href="#" data-real="#">Integritetspolicy</a>
+        </div>
+        <div data-ind="contact" data-ok="true" role="button" tabindex="0">
+          <h4>Kontakt<span class="tick">✓</span></h4>
+          E-post: teknikbutiken.kundtjanst@gmail.com<br>
+          Endast kontakt via WhatsApp-chatt.<br>
+          Org.nr: – &nbsp;·&nbsp; Adress: –
+        </div>
+        <div>
+          <h4>Följ oss</h4>
+          <a href="#" data-real="https://www.facebook.com/">Facebook</a>
+          <a href="#" data-real="https://www.instagram.com/">Instagram</a>
+        </div>
+      </div>
+      <p style="text-align:center;margin:16px auto 0;width:fit-content" data-ind="copyright" data-ok="true" role="button" tabindex="0">© 2017 Teknikbutiken. Alla rätigheter reserverade.<span class="tick">✓</span></p>
+    </footer>
+
+    <div class="status" id="status"></div>
+  </div>
+</div>
+</div>
+
+<div id="toasts" role="status" aria-live="polite"></div>
+
+<dialog id="summary" aria-labelledby="sumTitle">
+  <div class="dlg">
+    <h2 id="sumTitle">Övningen klar 🎉</h2>
+    <p id="sumLead"></p>
+    <p><b>Så skyddar du dig mot falska webbshoppar:</b></p>
+    <ul>
+      <li>Läs adressfältet noga. Det är domänen precis före första ensamma “/” som avgör vems sidan är.</li>
+      <li>Är priset för bra för att vara sant, så är det oftast inte sant.</li>
+      <li>Betala med kort eller faktura, aldrig med Swish till privatperson, presentkort eller krypto.</li>
+      <li>Kontrollera organisationsnummer och omdömen på en oberoende sajt innan du handlar.</li>
+      <li>Ange aldrig BankID-koder, CVC eller lösenord bara för att “verifiera” något.</li>
+    </ul>
+    <div class="row">
+      <button class="btn sec" id="sumClose">Fortsätt leta</button>
+      <button class="btn" id="sumRestart">Starta om</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  // What each clickable element teaches. ok=true means it IS a red flag.
+  var INFO = {
+    tls:{ok:true, title:"Osäker anslutning", msg:"Webbläsaren varnar “Inte säker”: certifikatet är självsignerat och gäller inte för domänen. Mata aldrig in uppgifter på en sida med certifikatvarning. Men tänk på att ett hänglås bara betyder krypterad trafik, inte att sidan är ärlig."},
+    domain:{ok:true, title:"Förväxlingsbar domän (typosquatting)", msg:"“teknlkbutiken” har ett litet L i stället för i. Och den riktiga domänen är det som står sist: kampanj-erbjudande.xyz. “teknikbutiken.se” är bara en underdomän som ska lura dig."},
+    longurl:{ok:true, title:"Lång och konstig URL", msg:".php-sida med spårningskoder som “ref=sms_vinnare” och en base64-kodad omdirigering (redir=…) till en annan sajt. Seriösa butiker har korta, läsbara adresser."},
+    tabtitle:{ok:true, title:"Skrikig rubrik och press", msg:"VERSALER, utropstecken och “ENDAST IDAG” är gjorda för att du ska sluta tänka efter."},
+    price:{ok:true, title:"För bra för att vara sant", msg:"En helt ny toppmobil för 1 299 kr i stället för 14 999 kr. Ingen seriös butik säljer med 91 % rabatt. Det är betet."},
+    timer:{ok:true, title:"Falsk nedräkning och knapphet", msg:"Timern börjar om när den når noll och “3 st kvar” ändras aldrig. Konstgjord brådska är ett klassiskt manipulationsknep."},
+    spelling:{ok:true, title:"Stavfel och konstig svenska", msg:"“bäst pris”, “Bestäl”, “levererat”, “sverige” med litet s och “tekniksbutik” i logotypen. Ofta maskinöversatt text."},
+    buy:{ok:true, title:"Köpknappen leder till en annan sajt", msg:"Håll muspekaren över knappen och titta i statusfältet längst ner: betalningen sker på “pay-secure.top”, en helt orelaterad domän."},
+    payment:{ok:true, title:"Betalningsmetoder utan skydd", msg:"Swish till privatperson, presentkort och Bitcoin går inte att få tillbaka. “Kortbetalning ur funktion” är ett sätt att få dig att välja dem."},
+    badge:{ok:true, title:"Falsk förtroendemärkning", msg:"Märket är bara en bild utan länk till någon certifieringsorganisation. Vem som helst kan rita en sköld och skriva “100% säker”."},
+    checkout:{ok:true, title:"Begär uppgifter de inte behöver", msg:"En butik behöver aldrig din BankID-kod. Personnummer, kortnummer och CVC i samma formulär är exakt vad bedragare vill åt."},
+    reviews:{ok:true, title:"Fejkade omdömen", msg:"Bara 5 stjärnor, samma dag, nästan identisk text och ett på engelska. Kolla omdömen på en oberoende sajt i stället."},
+    deadlinks:{ok:true, title:"Tomma länkar", msg:"Om oss, Köpvillkor och Returer leder ingenstans (“#”). En riktig butik måste enligt lag visa köpvillkor och ångerrätt."},
+    contact:{ok:true, title:"Ingen riktig kontaktinformation", msg:"Gmail-adress, bara WhatsApp och inget organisationsnummer eller adress. Svenska företag ska kunna identifieras."},
+    copyright:{ok:true, title:"Gammal och slarvig sidfot", msg:"“© 2017” på en Black Friday-rea 2026 och stavfelet “rätigheter” tyder på en hastigt kopierad mall."},
+    reload:{ok:false, title:"Vanlig webbläsarknapp", msg:"Knapparna i webbläsaren tillhör din webbläsare, inte sajten. De säger inget om sidan."},
+    search:{ok:false, title:"Inte misstänkt i sig", msg:"Ett sökfält finns på nästan alla butiker, både ärliga och falska."},
+    cart:{ok:false, title:"Inte misstänkt i sig", msg:"En varukorg är helt normal. Den bevisar varken att sajten är ärlig eller falsk."},
+    image:{ok:false, title:"Produktbilden är ingen tydlig signal", msg:"Snygga bilder är lätta att kopiera från tillverkaren. Rabattetiketten är däremot värd att lägga märke till, kolla priset!"},
+    shipping:{ok:false, title:"Normala leveransvillkor", msg:"Fri frakt över en viss summa och 2–4 dagars leverans är vanligt hos riktiga butiker."},
+    cookie:{ok:false, title:"Normal cookieinformation", msg:"Cookieinformation finns på de flesta sajter. Den säger inget om sajten är seriös."}
+  };
+
+  var win = document.getElementById('win');
+  var site = document.getElementById('site');
+  var els = Array.prototype.slice.call(document.querySelectorAll('[data-ind]'));
+  var total = els.filter(function(e){return e.dataset.ok==='true'}).length;
+  var found = {};
+  var wrong = 0;
+  var scoreTxt = document.getElementById('scoreTxt');
+  var barFill = document.getElementById('barFill');
+  var status = document.getElementById('status');
+  var toasts = document.getElementById('toasts');
+  var summary = document.getElementById('summary');
+  var shownSummary = false;
+
+  function updateScore(){
+    var n = Object.keys(found).length;
+    scoreTxt.textContent = n + ' / ' + total + ' hittade' + (wrong ? ' · ' + wrong + (wrong>1?' missar':' miss') : '');
+    barFill.style.width = (n/total*100) + '%';
+  }
+
+  function toast(kind, title, msg){
+    var t = document.createElement('div');
+    t.className = 'toast ' + kind;
+    var b = document.createElement('b'); b.textContent = title;
+    var m = document.createElement('span'); m.textContent = msg;
+    t.appendChild(b); t.appendChild(m);
+    toasts.appendChild(t);
+    while (toasts.children.length > 3) toasts.removeChild(toasts.firstChild);
+    setTimeout(function(){ t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(function(){t.remove()},300); }, 6000);
+  }
+
+  function handle(el){
+    var id = el.dataset.ind, info = INFO[id];
+    if (!info) return;
+    if (info.ok){
+      if (found[id]){ toast('info','Redan hittad', 'Du har redan hittat den här.'); return; }
+      found[id] = true;
+      el.classList.add('found');
+      toast('ok','✔ Rätt: ' + info.title, info.msg);
+      updateScore();
+      if (Object.keys(found).length === total && !shownSummary){
+        shownSummary = true;
+        setTimeout(openSummary, 900);
+      }
+    } else {
+      wrong++;
+      el.classList.add('decoyed','shake');
+      setTimeout(function(){ el.classList.remove('shake'); }, 400);
+      toast('bad','✘ Inte riktigt: ' + info.title, info.msg);
+      updateScore();
+    }
+  }
+
+  function openSummary(){
+    document.getElementById('sumLead').textContent =
+      'Du hittade alla ' + total + ' varningssignaler' + (wrong ? ' med ' + wrong + (wrong>1?' missar':' miss') : ' utan en enda miss') + '.';
+    if (summary.showModal) summary.showModal(); else summary.setAttribute('open','');
+  }
+
+  win.addEventListener('click', function(e){
+    var a = e.target.closest('a');
+    if (a) e.preventDefault();
+    var el = e.target.closest('[data-ind]');
+    if (el){ e.preventDefault(); handle(el); return; }
+    if (a) toast('info','Länken leder ingenstans', 'Ingenting i övningen går att besöka. Titta på statusfältet längst ner för att se vart länken pekar.');
+  });
+  win.addEventListener('keydown', function(e){
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var el = e.target.closest('[data-ind]');
+    if (!el) return;
+    e.preventDefault();
+    handle(el);
+  });
+
+  // Link preview in a browser-style status bar
+  function showLink(e){
+    var a = e.target.closest && e.target.closest('[data-real]');
+    if (a){ status.textContent = a.dataset.real === '#' ? 'https://teknlkbutiken.se.kampanj-erbjudande.xyz/sv-se/rea/bf2026/produkt.php#' : a.dataset.real; status.classList.add('on'); }
+    else status.classList.remove('on');
+  }
+  site.addEventListener('mouseover', showLink);
+  site.addEventListener('focusin', showLink);
+  site.addEventListener('mouseleave', function(){ status.classList.remove('on'); });
+
+  // Decorative browser buttons
+  Array.prototype.forEach.call(document.querySelectorAll('[data-decor]'), function(b){
+    b.addEventListener('click', function(){
+      toast('info','Webbläsarknapparna är dekorativa','Det här är bara en övning. Leta efter varningssignalerna i adressfältet och på sidan.');
+    });
+  });
+
+  // Fake countdown that silently restarts
+  var cd = document.getElementById('countdown'), secs = 599;
+  setInterval(function(){
+    secs = secs <= 0 ? 599 : secs - 1;
+    cd.textContent = String(Math.floor(secs/60)).padStart(2,'0') + ':' + String(secs%60).padStart(2,'0');
+  }, 1000);
+
+  document.getElementById('btnReveal').addEventListener('click', function(){
+    els.forEach(function(el){
+      if (el.dataset.ok==='true' && !found[el.dataset.ind]){ found[el.dataset.ind]=true; el.classList.add('found'); }
+    });
+    updateScore();
+    toast('info','Alla varningssignaler visade','Gröna ramar markerar varje verklig varningssignal. Klicka på “Starta om” för att försöka igen.');
+  });
+  function reset(){
+    found = {}; wrong = 0; shownSummary = false;
+    els.forEach(function(el){ el.classList.remove('found','decoyed','shake'); });
+    if (summary.open) summary.close();
+    updateScore();
+    site.scrollTop = 0;
+  }
+  document.getElementById('btnReset').addEventListener('click', reset);
+  document.getElementById('sumRestart').addEventListener('click', reset);
+  document.getElementById('sumClose').addEventListener('click', function(){ summary.close(); });
+
+  updateScore();
+})();
+</script>
+</body>
+</html>
